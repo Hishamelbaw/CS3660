@@ -1,0 +1,37 @@
+# Render Blueprint for the Job Pack API.
+#
+# When connecting this repo to Render, set the service's "Root Directory"
+# to the folder this file lives in (e.g. "Sprint 1 Job Pack") if the repo
+# contains other projects alongside this one.
+#
+# Env vars marked `sync: false` are secrets/deployment-specific values —
+# Render will prompt for them in the dashboard rather than reading a value
+# from this file. See .env.example for what each one means.
+services:
+  - type: web
+    name: job-pack-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: LLM_BACKEND
+        sync: false
+      - key: CLASS_OLLAMA_BASE_URL
+        sync: false
+      - key: CLASS_OLLAMA_API_KEY
+        sync: false
+      - key: CLASS_OLLAMA_MODEL
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-opus-4-8
+      - key: LOCAL_OLLAMA_BASE_URL
+        sync: false
+      - key: LOCAL_OLLAMA_MODEL
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///./job_pack.db
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false

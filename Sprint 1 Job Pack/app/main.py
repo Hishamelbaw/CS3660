@@ -1,16 +1,12 @@
+import os
 from contextlib import asynccontextmanager
-from pathlib import Path
 
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import init_db
 from app.routes.drafts import router as drafts_router
 from app.routes.generate import router as generate_router
-
-BASE_DIR = Path(__file__).resolve().parent
 
 
 @asynccontextmanager
@@ -21,13 +17,23 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Job Pack", lifespan=lifespan)
 
-app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
-templates = Jinja2Templates(directory=BASE_DIR / "templates")
+allowed_origins = [
+    origin.strip()
+    for origin in os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(drafts_router)
 app.include_router(generate_router)
 
 
-@app.get("/", response_class=HTMLResponse)
-def read_root(request: Request):
-    return templates.TemplateResponse(request, "index.html", {})
+@app.get("/")
+def read_root() -> dict:
+    return {"status": "ok", "app": "Job Pack"}

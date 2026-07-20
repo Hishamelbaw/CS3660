@@ -1,3 +1,5 @@
+const API_BASE = window.API_BASE_URL || "";
+
 let lastGenerated = null; // { job_description, candidate_profile, backend_used, resume_text, cover_letter_text, infographic_svg, resume_pdf_base64, cover_letter_pdf_base64 }
 
 function base64ToBlobUrl(base64, mimeType) {
@@ -27,7 +29,7 @@ async function handleGenerateSubmit(event) {
   setStatus("generate-status", "Generating... this can take a while.");
 
   try {
-    const response = await fetch("/api/generate", {
+    const response = await fetch(`${API_BASE}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -82,7 +84,7 @@ async function handleSaveDraft() {
 
   setStatus("save-status", "Saving...");
   try {
-    const response = await fetch("/api/drafts", {
+    const response = await fetch(`${API_BASE}/api/drafts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -109,7 +111,7 @@ async function handleSaveDraft() {
 }
 
 async function loadDrafts() {
-  const response = await fetch("/api/drafts");
+  const response = await fetch(`${API_BASE}/api/drafts`);
   const drafts = await response.json();
 
   const list = document.getElementById("drafts-list");
@@ -147,7 +149,7 @@ async function loadDrafts() {
 }
 
 async function openDraft(draftId) {
-  const response = await fetch(`/api/drafts/${draftId}`);
+  const response = await fetch(`${API_BASE}/api/drafts/${draftId}`);
   if (!response.ok) {
     return;
   }
@@ -177,7 +179,7 @@ async function openDraft(draftId) {
 }
 
 async function deleteDraft(draftId) {
-  await fetch(`/api/drafts/${draftId}`, { method: "DELETE" });
+  await fetch(`${API_BASE}/api/drafts/${draftId}`, { method: "DELETE" });
   await loadDrafts();
 }
 
@@ -193,7 +195,7 @@ async function handleCompare() {
   }
 
   const [draftA, draftB] = await Promise.all(
-    checked.map((cb) => fetch(`/api/drafts/${cb.value}`).then((r) => r.json()))
+    checked.map((cb) => fetch(`${API_BASE}/api/drafts/${cb.value}`).then((r) => r.json()))
   );
 
   const view = document.getElementById("compare-view");

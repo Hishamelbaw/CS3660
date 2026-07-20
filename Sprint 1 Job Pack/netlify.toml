@@ -1,0 +1,12 @@
+# Netlify config for the Job Pack static frontend.
+#
+# If this repo contains other projects alongside this one, set the
+# Netlify site's "Base directory" to the folder this file lives in
+# (e.g. "Sprint 1 Job Pack"); `publish` below is then resolved relative
+# to that base directory.
+#
+# No build command: frontend/ is already plain static HTML/CSS/JS with
+# no build step. Before going live, edit frontend/config.js so
+# window.API_BASE_URL points at the deployed Render backend.
+[build]
+  publish = "frontend"
