@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Database
+*.db
+*.sqlite3
+
+# Generated artifacts (dev output)
+/output/
+
+# Editor/OS
+.vscode/
+.DS_Store
