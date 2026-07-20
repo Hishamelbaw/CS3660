@@ -1,6 +1,20 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
-app = FastAPI(title="Job Pack")
+from app.db import init_db
+from app.routes.drafts import router as drafts_router
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+
+app = FastAPI(title="Job Pack", lifespan=lifespan)
+
+app.include_router(drafts_router)
 
 
 @app.get("/")
