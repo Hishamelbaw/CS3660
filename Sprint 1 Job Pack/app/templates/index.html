@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job Pack</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Job Pack</h1>
+    <p class="subtitle">Paste a job description and your profile to generate a tailored résumé, cover letter, and company-fit infographic.</p>
+  </header>
+
+  <main>
+    <section id="generate-section">
+      <form id="generate-form">
+        <label for="job-description">Job description</label>
+        <textarea id="job-description" rows="10" placeholder="Paste the job posting here..." required></textarea>
+
+        <label for="candidate-profile">Candidate profile</label>
+        <textarea id="candidate-profile" rows="10" placeholder="Paste your resume / background here..." required></textarea>
+
+        <button type="submit" id="generate-button">Generate Job Pack</button>
+        <span id="generate-status" class="status"></span>
+      </form>
+    </section>
+
+    <section id="results-section" class="hidden">
+      <h2>Results <span id="results-backend" class="badge"></span></h2>
+
+      <div class="artifact">
+        <h3>Résumé</h3>
+        <pre id="resume-text"></pre>
+        <a id="download-resume" class="button" download="resume.pdf">Download résumé PDF</a>
+      </div>
+
+      <div class="artifact">
+        <h3>Cover Letter</h3>
+        <pre id="cover-letter-text"></pre>
+        <a id="download-cover-letter" class="button" download="cover_letter.pdf">Download cover letter PDF</a>
+      </div>
+
+      <div class="artifact">
+        <h3>Company Fit</h3>
+        <div id="infographic"></div>
+      </div>
+
+      <div class="save-draft">
+        <input type="text" id="draft-title" placeholder="Draft title (e.g. 'v1 - concise')" />
+        <button id="save-draft-button">Save draft</button>
+        <span id="save-status" class="status"></span>
+      </div>
+    </section>
+
+    <section id="drafts-section">
+      <h2>Saved Drafts</h2>
+      <p class="hint">Select exactly two drafts to compare them side by side.</p>
+      <ul id="drafts-list"></ul>
+      <button id="compare-button" disabled>Compare selected</button>
+    </section>
+
+    <section id="compare-section" class="hidden">
+      <h2>Compare</h2>
+      <div id="compare-view" class="compare-columns"></div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
